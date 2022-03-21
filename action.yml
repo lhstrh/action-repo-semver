@@ -38,7 +38,9 @@ runs:
       id: strip
       run: |
         tag="${{ steps.find.outputs.tag }}" && shopt -s extglob && echo "::set-output name=ver::${tag##v}"
+      shell: bash
     - name: Print results
       run: |
         echo "Latest release tag: ${{ steps.find.outputs.tag }}"
         echo "Without a leading 'v': ${{ steps.strip.outputs.ver }}"
+      shell: bash
