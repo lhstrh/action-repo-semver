@@ -31,11 +31,11 @@ runs:
       shell: bash
     - name: Find the latest release
       id: find
-      run: |
-        export tag=$(./latest-release.sh)
+      run: >
+        tag=$(./latest-release.sh)
         echo "::set-output name=tag::${tag}"
         shopt -s extglob
-        export ver="${tag##v}"
+        ver="${tag##v}"
         echo "::set-output name=ver::${ver}"
         echo "Latest release tag: ${tag}"
         echo "Without a leading 'v': ${ver}"
