@@ -14,6 +14,7 @@ outputs:
     value: ${{ steps.find.outputs.ver }}
 
 runs:
+  using: composite
   steps:
     - name: Check out repository
       uses: actions/checkout@v2
