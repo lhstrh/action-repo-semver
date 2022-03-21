@@ -20,6 +20,7 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repo }}
+        path: ./repo
     - name: Install semver-tool
       run: |
         wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -28,7 +29,7 @@ runs:
       shell: bash
     - name: Fetch latest-release script
       run: |
-        wget https://raw.githubusercontent.com/lf-lang/lingua-franca/master/.github/scripts/latest-release.sh
+        wget https://raw.githubusercontent.com/lhsth/latest-semver-tag-action/main/.github/latest-release.sh
         chmod +x latest-release.sh
       shell: bash
     - name: Fetch all tags
@@ -36,6 +37,7 @@ runs:
       shell: bash
     - name: Find the latest release
       id: find
+      working-directory: ./repo/
       run: |
         echo "::set-output name=tag::$(./latest-release.sh)"
       shell: bash
