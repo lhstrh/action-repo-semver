@@ -1,4 +1,5 @@
 #!/bin/bash
+cd repo
 latest="0.0.0"
 while IFS= read -r line; do
     if [[ $(semver compare ${line} ${latest} 2> /dev/null) = '1' ]]; then
