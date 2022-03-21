@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  smoke-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

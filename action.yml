@@ -24,8 +24,10 @@ runs:
         wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
         chmod +x /usr/local/bin/semver
         semver --version
+      shell: bash
     - name: Fetch all tags
       run: git fetch --all --tags
+      shell: bash
     - name: Find the latest release
       id: find
       run: |
@@ -36,3 +38,4 @@ runs:
         echo "::set-output name=ver::${ver}"
         echo "Latest release tag: ${tag}"
         echo "Without a leading 'v': ${ver}"
+      shell: bash
