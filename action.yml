@@ -27,16 +27,16 @@ runs:
         chmod +x /usr/local/bin/semver
         semver --version
       shell: bash
-    - name: Fetch latest-release script
-      run: |
-        wget https://raw.githubusercontent.com/lhstrh/latest-semver-tag-action/main/latest-release.sh
-        chmod +x latest-release.sh
-      shell: bash
+    # - name: Fetch latest-release script
+    #   run: |
+    #     wget https://raw.githubusercontent.com/lhstrh/latest-semver-tag-action/main/latest-release.sh
+    #     chmod +x latest-release.sh
+    #   shell: bash
     - name: Fetch all tags
       run: git fetch --all --tags
       shell: bash
     - name: Debug
-      run: ls -l && cd repo && git status
+      run: cd repo && git tag
       shell: bash
     - name: Find the latest release
       id: find
