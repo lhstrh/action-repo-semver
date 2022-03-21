@@ -11,7 +11,7 @@ outputs:
     value: ${{ steps.find.outputs.tag }}
   no-prefix:
     description: "Latest semver tag sans 'v'"
-    value: ${{ steps.find.outputs.ver }}
+    value: ${{ steps.strip.outputs.ver }}
 
 runs:
   using: composite
@@ -31,12 +31,14 @@ runs:
       shell: bash
     - name: Find the latest release
       id: find
-      run: >
-        tag=$(./latest-release.sh)
-        echo "::set-output name=tag::${tag}"
-        shopt -s extglob
-        ver="${tag##v}"
-        echo "::set-output name=ver::${ver}"
-        echo "Latest release tag: ${tag}"
-        echo "Without a leading 'v': ${ver}"
+      run: |
+        echo "::set-output name=tag::$(./latest-release.sh)"
       shell: bash
+    - name: Strip off 'v' prefix if there is one
+      id: strip
+      run: |
+        tag="${{ steps.find.outputs.tag }}" && shopt -s extglob && echo "::set-output name=ver::${tag##v}"
+    - name: Print results
+      run: |
+        echo "Latest release tag: ${{ steps.find.outputs.tag }}"
+        echo "Without a leading 'v': ${{ steps.strip.outputs.ver }}"
