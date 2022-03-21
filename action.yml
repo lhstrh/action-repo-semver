@@ -35,6 +35,9 @@ runs:
     - name: Fetch all tags
       run: git fetch --all --tags
       shell: bash
+    - name: Debug
+      run: ls -l && cd repo && git status
+      shell: bash
     - name: Find the latest release
       id: find
       run: |
