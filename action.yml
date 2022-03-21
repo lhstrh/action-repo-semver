@@ -5,7 +5,7 @@ on:
     inputs:
       repo:
         type: string
-        description: Repository
+        description: Repository name
         required: true
     outputs:
       ref:
@@ -14,6 +14,13 @@ on:
       ver:
         description: "The semver of the latest release (without a leading 'v')"
         value: ${{ jobs.run.outputs.ver }}
+  workflow_dispatch:
+    inputs:
+      repo:
+        type: string
+        description: Repository
+        required: true
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -24,7 +31,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         with:
-          repository: lf-lang/${{ inputs.repo }}
+          repository: ${{ (github.event.inputs || inputs).repo }}
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
