@@ -20,7 +20,7 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repo }}
-        path: ./repo
+        path: repo
     - name: Install semver-tool
       run: |
         wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
