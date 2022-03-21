@@ -17,7 +17,7 @@ runs:
   using: composite
   steps:
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repo }}
     - name: Install semver-tool
@@ -26,6 +26,11 @@ runs:
         chmod +x /usr/local/bin/semver
         semver --version
       shell: bash
+    - name: Fetch latest-release script
+      run: |
+        wget https://raw.githubusercontent.com/lf-lang/lingua-franca/master/.github/scripts/latest-release.sh
+        chmod +x latest-release.sh
+        shell: bash
     - name: Fetch all tags
       run: git fetch --all --tags
       shell: bash
