@@ -1,5 +1,5 @@
 name: Latest semver tag
-
+description: Return the latest semantic version tag
 inputs:
   repo:
     type: string
