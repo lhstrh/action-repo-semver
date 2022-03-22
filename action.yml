@@ -1,17 +1,41 @@
-name: Greatest SemVer Tag
-description: Return the greatest semantic version tag
+name: SemVer Tag
+description: Find the greatest semantic version tag and return it, along with a patch, minor, and major increment.
 inputs:
   path:
     type: string
     description: Path to the repository
     default: ${{ github.workspace }}
+  prefix:
+    type: string
+    description: Prefix used in version tags
+    default: 'v'
+
 outputs:
-  tag:
-    description: Greatest semver tag
+  current:
+    description: Current semver tag
     value: ${{ steps.find.outputs.tag }}
-  no-prefix:
-    description: "Greatest semver tag sans 'v'"
+  current-bare:
+    description: "Current semver tag stripped from leading 'v'"
     value: ${{ steps.strip.outputs.ver }}
+  next-patch:
+    description: Patch increment (over current semver tag)
+    value: ${{ steps.incr.outputs.patch }}
+  next-patch-bare:
+    description: "Patch increment stripped from leading 'v'"
+    value: ${{ steps.strip.outputs.patch }}
+  next-minor:
+    description: Minor increment (over current semver tag)
+    value: ${{ steps.incr.outputs.minor }}
+  next-minor-bare:
+    description: "Minor increment stripped from leading 'v'"
+    value: ${{ steps.strip.outputs.minor }}
+  next-major:
+    description: Major increment (over current semver tag)
+    value: ${{ steps.incr.outputs.major }}
+  next-major-bare:
+    description: "Major increment stripped from leading 'v'"
+    value: ${{ steps.strip.outputs.major }}
+
 branding:
   icon: tag
   color: green
@@ -38,13 +62,25 @@ runs:
       run: |
         echo "::set-output name=tag::$(greatest-semver-tag)"
       shell: bash
-    - name: Strip off 'v' prefix if there is one
+    - name: Produce increments
+      id: incr
+      run: |
+        echo "::set-output name=patch::$(semver bump ${{ steps.find.outputs.tag }} patch)"
+        echo "::set-output name=minor::$(semver bump ${{ steps.find.outputs.tag }} minor)"
+        echo "::set-output name=major::$(semver bump ${{ steps.find.outputs.tag }} major)"
+      shell: bash  
+    - name: Produce bare versions (without leading 'v')
       id: strip
       run: |
         tag="${{ steps.find.outputs.tag }}" && shopt -s extglob && echo "::set-output name=ver::${tag##v}"
+        tag="${{ steps.incr.outputs.patch }}" && shopt -s extglob && echo "::set-output name=patch::${tag##v}"
+        tag="${{ steps.incr.outputs.minor }}" && shopt -s extglob && echo "::set-output name=minor::${tag##v}"
+        tag="${{ steps.incr.outputs.major }}" && shopt -s extglob && echo "::set-output name=major::${tag##v}"
       shell: bash
     - name: Print results
       run: |
-        echo "Latest release tag: ${{ steps.find.outputs.tag }}"
-        echo "Without a leading 'v': ${{ steps.strip.outputs.ver }}"
+        echo "Current tag: ${{ steps.find.outputs.tag }}"
+        echo "Patch increment: ${{ steps.incr.outputs.patch }}"
+        echo "Minor increment: ${{ steps.incr.outputs.minor }}"
+        echo "Major increment: ${{ steps.incr.outputs.major }}"
       shell: bash
