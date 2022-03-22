@@ -1,4 +1,4 @@
-name: Greatest SemVer tag
+name: Greatest SemVer Tag
 description: Return the greatest semantic version tag
 inputs:
   repo:
