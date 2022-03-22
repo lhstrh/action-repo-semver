@@ -20,5 +20,5 @@ jobs:
           semver --version
       - name: Perform tests
         run: |
-          semver compare ${{ steps.run-composite.outputs.tag }} 0.0.0
-          semver compare ${{ steps.run-composite.outputs.no-prefix }} 0.0.0
+          [[ $(semver compare ${{ steps.run-composite.outputs.tag }} 0.0.0) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.run-composite.outputs.no-prefix }} 0.0.0) -eq 1 ]] || exit 1
