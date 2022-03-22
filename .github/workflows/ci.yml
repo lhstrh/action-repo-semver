@@ -13,11 +13,11 @@ jobs:
         id: run-composite
         with:
           repo: lf-lang/lingua-franca
-          - name: Install semver-tool
-      run: |
-        wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
-        chmod +x /usr/local/bin/semver
-        semver --version
+      - name: Install semver-tool
+        run: |
+          wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          chmod +x /usr/local/bin/semver
+          semver --version
       - name: Perform tests
         run: |
           semver compare ${{ steps.run-composite.outputs.tag }} 0.0.0
