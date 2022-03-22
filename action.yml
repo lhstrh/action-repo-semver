@@ -14,27 +14,21 @@ outputs:
   current:
     description: Current semver tag
     value: ${{ steps.find.outputs.tag }}
-  current-bare:
-    description: "Current semver tag stripped from leading 'v'"
-    value: ${{ steps.strip.outputs.ver }}
   next-patch:
     description: Patch increment (over current semver tag)
     value: ${{ steps.incr.outputs.patch }}
-  next-patch-bare:
-    description: "Patch increment stripped from leading 'v'"
-    value: ${{ steps.strip.outputs.patch }}
   next-minor:
     description: Minor increment (over current semver tag)
     value: ${{ steps.incr.outputs.minor }}
-  next-minor-bare:
-    description: "Minor increment stripped from leading 'v'"
-    value: ${{ steps.strip.outputs.minor }}
   next-major:
     description: Major increment (over current semver tag)
     value: ${{ steps.incr.outputs.major }}
-  next-major-bare:
-    description: "Major increment stripped from leading 'v'"
-    value: ${{ steps.strip.outputs.major }}
+  next-release:
+    description: Release increment (over current semver tag)
+    value: ${{ steps.incr.outputs.release }}
+  next-prerelease:
+    description: Prerelease increment (over current semver tag)
+    value: ${{ steps.incr.outputs.prerelease }}  
 
 branding:
   icon: tag
@@ -68,19 +62,15 @@ runs:
         echo "::set-output name=patch::$(semver bump patch ${{ steps.find.outputs.tag }})"
         echo "::set-output name=minor::$(semver bump minor ${{ steps.find.outputs.tag }})"
         echo "::set-output name=major::$(semver bump major ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=release::$(semver bump release ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=prerelease::$(semver bump prerel ${{ steps.find.outputs.tag }})"
       shell: bash  
-    - name: Produce bare versions (without leading 'v')
-      id: strip
-      run: |
-        tag="${{ steps.find.outputs.tag }}" && shopt -s extglob && echo "::set-output name=ver::${tag##v}"
-        tag="${{ steps.incr.outputs.patch }}" && shopt -s extglob && echo "::set-output name=patch::${tag##v}"
-        tag="${{ steps.incr.outputs.minor }}" && shopt -s extglob && echo "::set-output name=minor::${tag##v}"
-        tag="${{ steps.incr.outputs.major }}" && shopt -s extglob && echo "::set-output name=major::${tag##v}"
-      shell: bash
     - name: Print results
       run: |
         echo "Current tag: ${{ steps.find.outputs.tag }}"
         echo "Patch increment: ${{ steps.incr.outputs.patch }}"
         echo "Minor increment: ${{ steps.incr.outputs.minor }}"
         echo "Major increment: ${{ steps.incr.outputs.major }}"
+        echo "Release increment: ${{ steps.incr.outputs.release }}"
+        echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
       shell: bash
