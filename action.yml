@@ -33,10 +33,7 @@ runs:
     #     chmod +x latest-release.sh
     #   shell: bash
     - name: Fetch all tags
-      run: git fetch --all --tags
-      shell: bash
-    - name: Debug
-      run: cd repo && ls -l
+      run: cd repo && git fetch --all --tags
       shell: bash
     - name: Find the latest release
       id: find
