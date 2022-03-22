@@ -12,7 +12,9 @@ outputs:
   no-prefix:
     description: "Latest semver tag sans 'v'"
     value: ${{ steps.strip.outputs.ver }}
-
+branding:
+  icon: tag
+  color: green
 runs:
   using: composite
   steps:
