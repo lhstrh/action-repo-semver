@@ -7,7 +7,7 @@ This action sorts through a given repository's tags and returns the greatest acc
 ## Usage
 In the `steps` of a job, specify the following:
 ```
-- uses: actions/greatest-semver-tag@v1
+- uses: actions/greatest-semver-tag@v1.0.0-beta.0
   id: greatest
   with:
     # Repository name with owner. For example, actions/greatest-semver-tag
