@@ -25,7 +25,7 @@ runs:
       shell: bash
     - name: Install greatest-semver-tag
       run: |
-        wget -O /usr/local/bin/greatest-semver-tag https://raw.githubusercontent.com/lhstrh/greatest-semver-tag/no-checkout/greatest-semver-tag.sh
+        wget -O /usr/local/bin/greatest-semver-tag https://raw.githubusercontent.com/lhstrh/greatest-semver-tag/main/greatest-semver-tag.sh
         chmod +x /usr/local/bin/greatest-semver-tag
       shell: bash
     - name: Fetch all tags
