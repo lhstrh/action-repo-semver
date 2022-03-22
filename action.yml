@@ -1,5 +1,5 @@
-name: Latest semver tag
-description: Return the latest semantic version tag
+name: Greatest SemVer tag
+description: Return the greatest semantic version tag
 inputs:
   repo:
     type: string
@@ -7,10 +7,10 @@ inputs:
     default: ${{ github.repository }}
 outputs:
   tag:
-    description: Latest semver tag
+    description: Greatest semver tag
     value: ${{ steps.find.outputs.tag }}
   no-prefix:
-    description: "Latest semver tag sans 'v'"
+    description: "Greatest semver tag sans 'v'"
     value: ${{ steps.strip.outputs.ver }}
 branding:
   icon: tag
