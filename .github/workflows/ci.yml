@@ -10,9 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./
-        id: run-composite
-        with:
-          repo: lf-lang/lingua-franca
+        id: greatest-semver-tag
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -20,9 +18,9 @@ jobs:
           semver --version
       - name: Ensure outputs are not empty
         run: |
-          [[ ! -z "${{ steps.run-composite.outputs.tag }}" ]] || exit 1
-          [[ ! -z "${{ steps.run-composite.outputs.no-prefix }}" ]] || exit 1
+          [[ ! -z "${{ steps.greatest-semver-tag.outputs.tag }}" ]] || exit 1
+          [[ ! -z "${{ steps.greatest-semver-tag.outputs.no-prefix }}" ]] || exit 1
       - name: Ensure outputs are semver and greater than 0.0.0
         run: |
-          [[ $(semver compare ${{ steps.run-composite.outputs.tag }} 0.0.0) -eq 1 ]] || exit 1
-          [[ $(semver compare ${{ steps.run-composite.outputs.no-prefix }} 0.0.0) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.greatest-semver-tag.outputs.tag }} 0.0.0) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.greatest-semver-tag.outputs.no-prefix }} 0.0.0) -eq 1 ]] || exit 1
