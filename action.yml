@@ -30,10 +30,10 @@ runs:
     - name: Fetch all tags
       run: cd repo && git fetch --all --tags
       shell: bash
-    - name: Find the latest release
+    - name: Find the greatest semver tag
       id: find
       run: |
-        echo "::set-output name=tag::$(./latest-release.sh)"
+        echo "::set-output name=tag::$(./greatest-semver-tag.sh)"
       shell: bash
     - name: Strip off 'v' prefix if there is one
       id: strip
