@@ -14,6 +14,9 @@ outputs:
   current:
     description: Current semver tag
     value: ${{ steps.find.outputs.tag }}
+  next-prerelease:
+    description: Prerelease increment (over current semver tag)
+    value: ${{ steps.incr.outputs.prerelease }}  
   next-patch:
     description: Patch increment (over current semver tag)
     value: ${{ steps.incr.outputs.patch }}
@@ -23,9 +26,6 @@ outputs:
   next-major:
     description: Major increment (over current semver tag)
     value: ${{ steps.incr.outputs.major }}
-  next-prerelease:
-    description: Prerelease increment (over current semver tag)
-    value: ${{ steps.incr.outputs.prerelease }}  
   next-release:
     description: Release increment (over current semver tag)
     value: ${{ steps.incr.outputs.release }}
@@ -67,10 +67,10 @@ runs:
       shell: bash  
     - name: Print results
       run: |
+        echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
         echo "Current tag: ${{ steps.find.outputs.tag }}"
         echo "Patch increment: ${{ steps.incr.outputs.patch }}"
         echo "Minor increment: ${{ steps.incr.outputs.minor }}"
         echo "Major increment: ${{ steps.incr.outputs.major }}"
-        echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
         echo "Release increment: ${{ steps.incr.outputs.release }}"
       shell: bash
