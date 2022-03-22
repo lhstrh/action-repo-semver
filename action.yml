@@ -65,9 +65,9 @@ runs:
     - name: Produce increments
       id: incr
       run: |
-        echo "::set-output name=patch::$(semver bump ${{ steps.find.outputs.tag }} patch)"
-        echo "::set-output name=minor::$(semver bump ${{ steps.find.outputs.tag }} minor)"
-        echo "::set-output name=major::$(semver bump ${{ steps.find.outputs.tag }} major)"
+        echo "::set-output name=patch::$(semver bump patch ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=minor::$(semver bump minor ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=major::$(semver bump major ${{ steps.find.outputs.tag }})"
       shell: bash  
     - name: Produce bare versions (without leading 'v')
       id: strip
