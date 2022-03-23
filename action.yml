@@ -17,6 +17,10 @@ inputs:
     type: string
     description: Version after planned release
     required: false
+  build:
+    type: string
+    description: String to be use in next-build output
+    required: false
 
 outputs:
   current:
@@ -37,6 +41,9 @@ outputs:
   next-release:
     description: Release increment (over current semver tag)
     value: ${{ steps.incr.outputs.release }}
+  next-build:
+    description: Release increment (over current semver tag)
+    value: ${{ steps.build.outputs.incr }}  
   planned-is-valid:
     description: True if planned input is valid semver greater than current
     value: ${{ steps.test.outputs.greater }}
@@ -104,7 +111,13 @@ runs:
         echo "::set-output name=major::$(semver bump major ${{ steps.find.outputs.tag }})"
         echo "::set-output name=prerelease::$(semver bump prerel ${{ steps.find.outputs.tag }})"
         echo "::set-output name=release::$(semver bump release ${{ steps.find.outputs.tag }})"
-      shell: bash  
+      shell: bash
+    - name: Produce build increment if a build string was given
+      id: build
+      run: |
+        echo "::set-output name=incr::$(semver bump build ${{ inputs.build }} ${{ steps.find.outputs.tag }})"
+      shell: bash    
+      if: ${{ inputs.build != '' }}
     - name: Print results
       run: |
         echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
