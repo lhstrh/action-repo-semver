@@ -25,7 +25,6 @@ jobs:
         with:
           repo: lf-lang/lingua-franca
           path: lingua-franca
-        id: semver-tag
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
