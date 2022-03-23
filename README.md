@@ -1,4 +1,4 @@
-# SemVer Tag
+# SemVer Tag (GitHub Action)
 
 [![CI](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml/badge.svg)](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml)
 
