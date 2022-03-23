@@ -37,11 +37,21 @@ You can then use the output in a subsequent step:
 Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current` and `next-*` are not prefixed _even if the tag has one_.
 
 ## Inputs
+
 ### `repo`
+If specified, this repository is checked out by the action. By default, no checkout occurs.
+
 ### `path`
+Location to find the repository checkout. By default, this is `$github.workspace`.
+
 ### `build`
+If specified, the `next-build` output will be generated featuring this string. If not specified, the `next-build` output will remain empty.
+
 ### `planned`
+If the given string is a valid semver greater than the `current` output, the `valid-planned` output evaluates to `true`.
+
 ### `post-planned`
+If the given string is a valid semver greater than the `planned` input, the `valid-post-planned` output evaluates to `true`.
 
 ## Outputs
 ### `tag`
