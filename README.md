@@ -49,16 +49,14 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 
 * `tag` The greatest tag found that qualifies as a semver string, empty if none was found.
 * `current` The version corresponding the the `tag` output, stripped of any prefix. Defaults to `0.0.0` if `tag` is empty. 
-* `next-prerelease` The smallest prerelease increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-prerelease` is `1.0.0-1`.
-* `next-patch` The smallest patch increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-patch` is `1.0.1`.
-* `next-minor` The smallest minor increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-minor` is `1.1.0`.
-* `next-major` The smallest major increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-major` is `2.0.0`.
-* `next-release` The smallest release increment relative to the `current` output. E.g., if `current` is `1.0.0-beta`, then `next-release` is `1.0.0`.
-*  `next-build` A build increment relative to the `current` output. E.g., if `current` is `1.0.0-beta` and the `1` input is `foo`, then `next-build` is `1.0.0-beta+1`.
-* `planned-is-valid`
-True if the `planned` input is a valid semver greater than the `current` output.
-* `post-planned-is-valid`
-True if the `post-planned` input is a valid semver greater than `planned` input.
+* `next-prerelease` The smallest prerelease increment relative to the `current` output. If `current` is `1.0.0`, then `next-prerelease` is `1.0.0-1`.
+* `next-patch` The smallest patch increment relative `current`. If `current` is `1.0.0`, then `next-patch` is `1.0.1`.
+* `next-minor` The smallest minor increment relative to `current`. If `current` is `1.0.0`, then `next-minor` is `1.1.0`.
+* `next-major` The smallest major increment relative to `current`. If `current` is `1.0.0`, then `next-major` is `2.0.0`.
+* `next-release` The smallest release increment relative to `current`. If `current` is `1.0.0-beta`, then `next-release` is `1.0.0`.
+* `next-build` A build increment relative to `current`. If `current` is `1.0.0-beta` and the `build` input is `1`, then `next-build` is `1.0.0-beta+1`.
+* `planned-is-valid` True if the `planned` input is a valid semver greater than the `current` output.
+* `post-planned-is-valid` True if the `post-planned` input is a valid semver greater than `planned` input.
 
 
 ## Acknowledgement
