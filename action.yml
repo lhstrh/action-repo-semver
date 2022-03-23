@@ -102,9 +102,9 @@ runs:
     - name: Determine the prefix and set it
       id: prefix
       run: >
-        tag="${{ steps.find.outputs.tag }}"
-        ver="${{ steps.cur.outputs.ver }}"
-        echo "::set-output name=str::${tag%"$ver"}"
+        tag="${{ steps.find.outputs.tag }}";
+        ver="${{ steps.cur.outputs.ver }}";
+        echo "::set-output name=str::$(echo ${tag%"$ver"})"
       shell: bash
     - name: Test if planned input is greater than output
       id: test
