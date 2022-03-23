@@ -48,7 +48,8 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 
 ## Outputs
 
-* `tag` The greatest tag found that qualifies as a semver string, empty if none was found.
+* `tag` The greatest tag found that qualifies as a semver string (or empty if none was found).
+* `prefix` The prefix used in the found `tag` (or empty if none was used).
 * `current` The version corresponding the the `tag` output, stripped of any prefix. Defaults to `0.0.0` if `tag` is empty. 
 * `next-prerelease` The smallest prerelease increment relative to the `current` output.
 * `next-patch` The smallest patch increment relative `current`.
