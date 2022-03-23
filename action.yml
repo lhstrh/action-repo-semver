@@ -42,6 +42,12 @@ branding:
 runs:
   using: composite
   steps:
+    - name: Check out repository if one is specified
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ inputs.repo }}
+        path: ${{ inputs.path }}
+      if: ${{ inputs.repo != '' }}
     - name: Install semver-tool
       run: |
         wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
