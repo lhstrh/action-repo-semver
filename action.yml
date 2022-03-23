@@ -62,7 +62,8 @@ runs:
       run: |
         echo "::set-output name=tag::$(greatest-semver-tag)"
       shell: bash
-    - name: Compare test-if-greater input to current output
+    - name: Test if compare-against input is greater than output
+      id: test
       run: >
         if [[ $(semver compare ${{ inputs.test-if-greater }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
           echo "::set-output name=greater::true"
