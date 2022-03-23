@@ -43,10 +43,9 @@ jobs:
           [[ ! -z "${{ steps.semver-tag.outputs.next-major }}" ]] || exit 1
           [[ ! -z "${{ steps.semver-tag.outputs.next-prerelease }}" ]] || exit 1
           [[ ! -z "${{ steps.semver-tag.outputs.next-release }}" ]] || exit 1
-      - name: Ensure outputs are semver and greater than 0.0.0
+      - name: Check relationships between versions
         run: |
           [[ $(semver compare ${{ steps.semver-tag.outputs.current }} 0.0.0) -eq 1 ]] || exit 1
-          [[ $(semver compare ${{ steps.semver-tag.outputs.next-prerelease }} ${{ steps.semver-tag.outputs.current }}) -eq 1 ]] || exit 1
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-patch }} ${{ steps.semver-tag.outputs.current }}) -eq 1 ]] || exit 1
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-minor }} ${{ steps.semver-tag.outputs.next-patch }}) -eq 1 ]] || exit 1
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-major }} ${{ steps.semver-tag.outputs.next-minor }}) -eq 1 ]] || exit 1
