@@ -40,7 +40,7 @@ jobs:
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-release }} ${{ steps.semver-tag.outputs.next-prerelease }}) -eq 1 ]] || exit 1
       - name: Ensure 0.0.0 is not greater than whatever the current version is
         run: |
-          [[ "${{ steps.semver-tag.outputs.input-greater }}" == "false" ]] || exit 1
+          [[ "${{ steps.semver-tag.outputs.planned-is-valid }}" == "false" ]] || exit 1
       - name: Ensure 1000000000.0.0 is greater than whatever the current version is
         run: |
-          [[ "${{ steps.billionth.outputs.input-greater }}" == "true" ]] || exit 1
+          [[ "${{ steps.billionth.outputs.planned-is-valid }}" == "true" ]] || exit 1
