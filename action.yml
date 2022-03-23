@@ -9,6 +9,10 @@ inputs:
     type: string
     description: Name of repository to check out
     required: false
+  build:
+    type: string
+    description: String to be used in next-build output
+    required: false
   planned:
     type: string
     description: Version of a planned release
@@ -16,10 +20,6 @@ inputs:
   post-planned:
     type: string
     description: Version after planned release
-    required: false
-  build:
-    type: string
-    description: String to be use in next-build output
     required: false
 
 outputs:
@@ -83,8 +83,13 @@ runs:
     - name: Find the greatest semver tag
       id: find
       working-directory: ${{ inputs.path }}
-      run: |
-        echo "::set-output name=tag::$(greatest-semver-tag)"
+      run: >
+        tag="$(greatest-semver-tag)";
+        if [[ tag = "0.0.0" ]]; then
+          echo "::set-output name=tag::$(greatest-semver-tag)"
+        else
+          echo "::set-output name=tag::$(greatest-semver-tag)"
+        fi
       shell: bash
     - name: Set current version based on stripped tag
       id: cur
