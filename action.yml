@@ -1,4 +1,4 @@
-name: SemVer Tag
+name: Repo SemVer
 description: Find the greatest semantic version tag and return it, along with a prerelease, patch, minor, major, and release increment.
 inputs:
   path:
