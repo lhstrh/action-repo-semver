@@ -126,4 +126,5 @@ runs:
         echo "Minor increment: ${{ steps.incr.outputs.minor }}"
         echo "Major increment: ${{ steps.incr.outputs.major }}"
         echo "Release increment: ${{ steps.incr.outputs.release }}"
+        echo "Build increment (if specified): ${{ steps.build.outputs.incr }}"
       shell: bash
