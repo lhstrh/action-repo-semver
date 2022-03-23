@@ -1,4 +1,4 @@
-name: Git SemVer
+name: Repo SemVer
 description: Find the greatest semantic version Git tag and return it, along with ("major", "minor", etc.) increments.
 inputs:
   path:
