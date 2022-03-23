@@ -10,8 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./
+        with:
+          compare-against: 0.0.0
         id: semver-tag
-        compare-against: 0.0.0
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
