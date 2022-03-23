@@ -43,7 +43,7 @@ runs:
   using: composite
   steps:
     - name: Check out repository if one is specified
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repo }}
         path: ${{ inputs.path }}
