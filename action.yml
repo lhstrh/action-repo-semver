@@ -13,6 +13,10 @@ inputs:
     type: string
     description: Version of a planned release
     required: false
+  post-planned:
+    type: string
+    description: Version after planned release
+    required: false
 
 outputs:
   current:
@@ -36,6 +40,10 @@ outputs:
   planned-is-valid:
     description: True if planned input is valid semver greater than current
     value: ${{ steps.test.outputs.greater }}
+  post-planned-is-valid:
+    description: True if post-planned input is valid semver greater planned
+    value: ${{ steps.test-post.outputs.greater }}
+
 branding:
   icon: tag
   color: green
@@ -78,6 +86,16 @@ runs:
         fi
       shell: bash
       if: ${{ inputs.planned != '' }}
+    - name: Test if post-planned input is greater than planned input
+      id: test-post
+      run: >
+        if [[ $(semver compare ${{ inputs.post-planned }} ${{ inputs.planned }}) -eq 1 ]]; then
+          echo "::set-output name=greater::true"
+        else
+          echo "::set-output name=greater::false"
+        fi
+      shell: bash
+      if: ${{ inputs.planned != '' && inputs.post-planned != '' }}
     - name: Produce increments
       id: incr
       run: |

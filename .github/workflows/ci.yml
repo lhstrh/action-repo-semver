@@ -16,6 +16,7 @@ jobs:
       - uses: ./
         with:
           planned: 1000000000.0.0
+          post-planned: 1000000000.0.1
         id: billionth
       - name: Install semver-tool
         run: |
@@ -44,3 +45,6 @@ jobs:
       - name: Ensure 1000000000.0.0 is greater than whatever the current version is
         run: |
           [[ "${{ steps.billionth.outputs.planned-is-valid }}" == "true" ]] || exit 1
+      - name: Ensure 1000000000.0.1 is greater than 1000000000.0.0
+        run: |
+          [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" == "true" ]] || exit 1
