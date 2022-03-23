@@ -11,8 +11,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         with:
-          compare-against: 0.0.0
+          planned: 0.0.0
         id: semver-tag
+      - uses: ./
+        with:
+          planned: 1000000000.0.0
+        id: billionth
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -37,3 +41,6 @@ jobs:
       - name: Ensure 0.0.0 is not greater than whatever the current version is
         run: |
           [[ "${{ steps.semver-tag.outputs.input-greater }}" == "false" ]] || exit 1
+      - name: Ensure 1000000000.0.0 is greater than whatever the current version is
+        run: |
+          [[ "${{ steps.billionth.outputs.input-greater }}" == "true" ]] || exit 1

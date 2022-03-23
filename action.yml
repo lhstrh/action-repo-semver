@@ -9,9 +9,9 @@ inputs:
     type: string
     description: Name of repository to check out
     required: false
-  compare-against:
+  planned:
     type: string
-    description: Version to compare against the current
+    description: Version of a planned release
     required: false
 
 outputs:
@@ -33,8 +33,8 @@ outputs:
   next-release:
     description: Release increment (over current semver tag)
     value: ${{ steps.incr.outputs.release }}
-  input-greater:
-    description: True if compare-against input is greater than current output
+  planned-is-valid:
+    description: True if planned input is valid semver greater than current
     value: ${{ steps.test.outputs.greater }}
 branding:
   icon: tag
