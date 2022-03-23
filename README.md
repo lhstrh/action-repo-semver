@@ -36,6 +36,7 @@ You can then use the output in a subsequent step:
 ```
 Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current` and `next-*` are not prefixed _even if the tag has one_.
 
+
 ## Inputs
 
 ### `repo`
@@ -54,17 +55,36 @@ If the given string is a valid semver greater than the `current` output, the `va
 If the given string is a valid semver greater than the `planned` input, the `valid-post-planned` output evaluates to `true`.
 
 ## Outputs
+
 ### `tag`
+The greatest tag found that qualifies as a semver string, empty if none was found.
+
 ### `current`
-Defaults to `0.0.0` if no semver tag was found. 
+The version corresponding the the `tag` output, stripped of any prefix. Defaults to `0.0.0` if `tag` is empty. 
+
 ### `next-prerelease`
+The smallest prerelease increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-prerelease` is `1.0.0-1`.
+
 ### `next-patch`
+The smallest patch increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-patch` is `1.0.1`.
+
 ### `next-minor`
+The smallest minor increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-minor` is `1.1.0`.
+
 ### `next-major`
+The smallest major increment relative to the `current` output. E.g., if `current` is `1.0.0`, then `next-major` is `2.0.0`.
+
 ### `next-release`
+The smallest release increment relative to the `current` output. E.g., if `current` is `1.0.0-beta`, then `next-release` is `1.0.0`.
+
 ### `next-build`
+A build increment relative to the `current` output. E.g., if `current` is `1.0.0-beta` and the `1` input is `foo`, then `next-build` is `1.0.0-beta+1`.
+
 ### `planned-is-valid`
+True if the `planned` input is a valid semver greater than the `current` output.
+
 ### `post-planned-is-valid`
+True if the `post-planned` input is a valid semver greater than `planned` input.
 
 
 ## Acknowledgement
