@@ -88,11 +88,17 @@ runs:
       shell: bash
     - name: Construct version from tag
       id: construct
-      run: >
-        rel="$(semver get release $tag)"
-        pre="$(semver get prerel $tag)"
-        build="$(semver get build $tag)"
-        echo "::set-output name=ver::$rel-$pre+build"
+      run: |
+        rel="$(semver get release $tag)";
+        pre="$(semver get prerel $tag)";
+        build="$(semver get build $tag)";
+        if [[ $pre != "" ]]; then
+          pre="-$pre"
+        fi
+        if [[ $build != "" ]]; then
+          build="+$build"
+        fi
+        echo "::set-output name=ver::$rel$pre$build"
       shell: bash
     - name: Test if planned input is greater than output
       id: test
