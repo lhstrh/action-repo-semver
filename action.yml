@@ -66,6 +66,8 @@ runs:
       run: >
         if [[ $(semver compare ${{ inputs.test-if-greater }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
           echo "::set-output name=greater::true"
+        else
+          echo "::set-output name=greater::false"
         fi
       shell: bash
       if: ${{ inputs.test-if-greater != '' }}
