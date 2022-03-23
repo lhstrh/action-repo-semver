@@ -71,7 +71,7 @@ runs:
           echo "::set-output name=greater::false"
         fi
       shell: bash
-      if: ${{ inputs.test-if-greater != '' }}
+      if: ${{ inputs.compare-against != '' }}
     - name: Produce increments
       id: incr
       run: |
