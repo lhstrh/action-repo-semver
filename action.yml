@@ -23,9 +23,12 @@ inputs:
     required: false
 
 outputs:
+  tag:
+    description: Tag corresponding to current version
+    value: ${{ steps.find.outputs.tag }}    
   current:
-    description: Current semver tag
-    value: ${{ steps.find.outputs.tag }}
+    description: Current version
+    value: ${{ steps.find.outputs.ver }}
   next-prerelease:
     description: Prerelease increment (over current semver tag)
     value: ${{ steps.incr.outputs.prerelease }}  
@@ -80,8 +83,13 @@ runs:
     - name: Find the greatest semver tag
       id: find
       working-directory: ${{ inputs.path }}
-      run: |
+      run: >
+        tag=$(greatest-semver-tag)
         echo "::set-output name=tag::$(greatest-semver-tag)"
+        rel="$(semver get release $tag)"
+        pre="$(semver get prerel $tag)"
+        build="$(semver get build $tag)"
+        echo "::set-output name=ver::$rel-$pre+build"
       shell: bash
     - name: Test if planned input is greater than output
       id: test
@@ -120,8 +128,9 @@ runs:
       if: ${{ inputs.build != '' }}
     - name: Print results
       run: |
+        echo "Greatest tag: ${{ steps.find.outputs.tag }}"
+        echo "Current version: ${{ steps.find.outputs.ver }}"
         echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
-        echo "Current tag: ${{ steps.find.outputs.tag }}"
         echo "Patch increment: ${{ steps.incr.outputs.patch }}"
         echo "Minor increment: ${{ steps.incr.outputs.minor }}"
         echo "Major increment: ${{ steps.incr.outputs.major }}"
