@@ -65,7 +65,7 @@ runs:
     - name: Test if compare-against input is greater than output
       id: test
       run: >
-        if [[ $(semver compare ${{ inputs.test-if-greater }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
+        if [[ $(semver compare ${{ inputs.planned }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
           echo "::set-output name=greater::true"
         else
           echo "::set-output name=greater::false"
