@@ -1,8 +1,8 @@
-# SemVer Tag (GitHub Action)
+# SemVer Tag
 
 [![CI](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml/badge.svg)](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml)
 
-This action sorts through a given repository's tags and outputs the greatest according to the [rules of semantic versioning](https://semver.org/). In addition, it outputs "release", "major", "minor", "patch", "prerelease", and "build" increments. When given the version number of a release planned for the future, this action also reports whether it is indeed greater than the current version.
+This GitHub Action sorts through a given repository's tags and outputs the greatest according to the [rules of semantic versioning](https://semver.org/). In addition, it outputs "release", "major", "minor", "patch", "prerelease", and "build" increments. When given the version number of a release planned for the future, this action also reports whether it is indeed greater than the current version.
 
 ## Usage
 In the `steps` of a job, specify the following:
