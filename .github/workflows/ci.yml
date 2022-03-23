@@ -20,6 +20,11 @@ jobs:
           planned: 1000000000.0.0
           post-planned: 1000000000.0.1
         id: billionth
+      - name: Run local action with build=foo
+        uses: ./
+        with:
+          build: foo
+        id: foo-build
       - name: Run local action with repo=lf-lang/lingua-franca
         uses: ./
         with:
@@ -55,3 +60,6 @@ jobs:
       - name: Ensure 1000000000.0.1 is greater than 1000000000.0.0
         run: |
           [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" == "true" ]] || exit 1
+      - name: Ensure next-build of foo-build is foo
+        run: |
+          [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" == "foo" ]] || exit 1
