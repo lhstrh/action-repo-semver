@@ -7,7 +7,7 @@ This GitHub Action sorts through a given repository's tags and outputs the great
 ## Usage
 In the `steps` of a job, specify the following:
 ```
-- uses: actions/repo-semver-tag@v1.0.0-beta.0
+- uses: actions/repo-semver-tag@v1.0.0-rc
   id: repo-semver-tag
   with:
     # Repository name with owner. For example, actions/greatest-semver-tag
