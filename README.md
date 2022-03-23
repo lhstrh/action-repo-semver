@@ -1,4 +1,4 @@
-# Git SemVer
+# Repo SemVer
 
 [![CI](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml/badge.svg)](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml)
 
@@ -7,8 +7,8 @@ This GitHub Action sorts through a given repository's tags and outputs the great
 ## Usage
 In the `steps` of a job, specify the following:
 ```
-- uses: lhstrh/action-git-semver@v1.0.0-rc
-  id: git-semver
+- uses: lhstrh/action-repo-semver@v1.0.0-rc
+  id: repo-semver
   with:
     # Repository name with owner. For example, actions/checkout
     # Default: ${{ github.repository }}
@@ -30,9 +30,9 @@ You can then use the output in a subsequent step:
 ```
 - name: Do something with the found tag
   run: |
-    echo "The greatest tag is: ${{ steps.git-semver.outputs.tag }}"
-    echo "The current version is: ${{ steps.git-semver.outputs.current }}"
-    echo "The next major release is: ${{ steps.git-semver.outputs.next-major }}"
+    echo "The greatest tag is: ${{ steps.repo-semver.outputs.tag }}"
+    echo "The current version is: ${{ steps.repo-semver.outputs.current }}"
+    echo "The next major release is: ${{ steps.repo-semver.outputs.next-major }}"
 ```
 Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current` and `next-*` are not prefixed _even if the tag has one_.
 
