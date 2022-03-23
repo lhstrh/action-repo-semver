@@ -29,6 +29,9 @@ outputs:
   current:
     description: Current version
     value: ${{ steps.cur.outputs.ver }}
+  prefix:
+    description: Prefix used in the tag
+    value: ${{ steps.prefix.output.str }}
   next-prerelease:
     description: Prerelease increment (over current semver tag)
     value: ${{ steps.incr.outputs.prerelease }}  
@@ -96,6 +99,13 @@ runs:
       run: |
         echo "::set-output name=ver::$(echo "${{ steps.find.outputs.tag }}" | sed 's/^[^0-9]*//')"
       shell: bash
+    - name: Determine the prefix and set it
+      id: prefix
+      run: >
+        tag="${{ steps.find.outputs.tag }}"
+        ver="${{ steps.cur.outputs.ver }}"
+        echo "::set-output name=str::${tag%"$ver"}"
+      shell: bash
     - name: Test if planned input is greater than output
       id: test
       run: >
@@ -134,6 +144,7 @@ runs:
     - name: Print results
       run: |
         echo "Greatest tag: ${{ steps.find.outputs.tag }}"
+        echo "Used prefix:" ${{ steps.prefix.outputs.str }}"
         echo "Current version: ${{ steps.cur.outputs.ver }}"
         echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
         echo "Patch increment: ${{ steps.incr.outputs.patch }}"
