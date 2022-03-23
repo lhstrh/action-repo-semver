@@ -62,7 +62,7 @@ runs:
       run: |
         echo "::set-output name=tag::$(greatest-semver-tag)"
       shell: bash
-    - name: Test if compare-against input is greater than output
+    - name: Test if planned input is greater than output
       id: test
       run: >
         if [[ $(semver compare ${{ inputs.planned }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
@@ -71,7 +71,7 @@ runs:
           echo "::set-output name=greater::false"
         fi
       shell: bash
-      if: ${{ inputs.compare-against != '' }}
+      if: ${{ inputs.planned != '' }}
     - name: Produce increments
       id: incr
       run: |
