@@ -9,8 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./
-        id: greatest-semver-tag
+      - name: Run local action with planned=0.0.0
+        uses: ./
+        with:
+          planned: 0.0.0
+        id: semver-tag
+      - name: Run local action with planned=1000000000.0.0, post-planned=1000000000.0.1
+        uses: ./
+        with:
+          planned: 1000000000.0.0
+          post-planned: 1000000000.0.1
+        id: billionth
+      - name: Run local action with build=foo
+        uses: ./
+        with:
+          build: foo
+        id: foo-build
+      - name: Run local action with repo=lf-lang/lingua-franca
+        uses: ./
+        with:
+          repo: lf-lang/lingua-franca
+          path: lingua-franca
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -18,9 +37,29 @@ jobs:
           semver --version
       - name: Ensure outputs are not empty
         run: |
-          [[ ! -z "${{ steps.greatest-semver-tag.outputs.tag }}" ]] || exit 1
-          [[ ! -z "${{ steps.greatest-semver-tag.outputs.no-prefix }}" ]] || exit 1
+          [[ ! -z "${{ steps.semver-tag.outputs.current }}" ]] || exit 1
+          [[ ! -z "${{ steps.semver-tag.outputs.next-patch }}" ]] || exit 1
+          [[ ! -z "${{ steps.semver-tag.outputs.next-minor }}" ]] || exit 1
+          [[ ! -z "${{ steps.semver-tag.outputs.next-major }}" ]] || exit 1
+          [[ ! -z "${{ steps.semver-tag.outputs.next-prerelease }}" ]] || exit 1
+          [[ ! -z "${{ steps.semver-tag.outputs.next-release }}" ]] || exit 1
       - name: Ensure outputs are semver and greater than 0.0.0
         run: |
-          [[ $(semver compare ${{ steps.greatest-semver-tag.outputs.tag }} 0.0.0) -eq 1 ]] || exit 1
-          [[ $(semver compare ${{ steps.greatest-semver-tag.outputs.no-prefix }} 0.0.0) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.semver-tag.outputs.current }} 0.0.0) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.semver-tag.outputs.next-prerelease }} ${{ steps.semver-tag.outputs.current }}) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.semver-tag.outputs.next-patch }} ${{ steps.semver-tag.outputs.current }}) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.semver-tag.outputs.next-minor }} ${{ steps.semver-tag.outputs.next-patch }}) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.semver-tag.outputs.next-major }} ${{ steps.semver-tag.outputs.next-minor }}) -eq 1 ]] || exit 1
+          [[ $(semver compare ${{ steps.semver-tag.outputs.next-release }} ${{ steps.semver-tag.outputs.next-prerelease }}) -eq 1 ]] || exit 1
+      - name: Ensure 0.0.0 is not greater than whatever the current version is
+        run: |
+          [[ "${{ steps.semver-tag.outputs.planned-is-valid }}" == "false" ]] || exit 1
+      - name: Ensure 1000000000.0.0 is greater than whatever the current version is
+        run: |
+          [[ "${{ steps.billionth.outputs.planned-is-valid }}" == "true" ]] || exit 1
+      - name: Ensure 1000000000.0.1 is greater than 1000000000.0.0
+        run: |
+          [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" == "true" ]] || exit 1
+      - name: Ensure next-build of foo-build is foo
+        run: |
+          [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" == "foo" ]] || exit 1

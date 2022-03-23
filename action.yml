@@ -1,23 +1,71 @@
-name: Greatest SemVer Tag
-description: Return the greatest semantic version tag
+name: SemVer Tag
+description: Find the greatest semantic version tag and return it, along with a prerelease, patch, minor, major, and release increment.
 inputs:
   path:
     type: string
     description: Path to the repository
     default: ${{ github.workspace }}
+  repo:
+    type: string
+    description: Name of repository to check out
+    required: false
+  planned:
+    type: string
+    description: Version of a planned release
+    required: false
+  post-planned:
+    type: string
+    description: Version after planned release
+    required: false
+  build:
+    type: string
+    description: String to be use in next-build output
+    required: false
+
 outputs:
   tag:
-    description: Greatest semver tag
-    value: ${{ steps.find.outputs.tag }}
-  no-prefix:
-    description: "Greatest semver tag sans 'v'"
-    value: ${{ steps.strip.outputs.ver }}
+    description: Tag corresponding to current version
+    value: ${{ steps.find.outputs.tag }}    
+  current:
+    description: Current version
+    value: ${{ steps.cur.outputs.ver }}
+  next-prerelease:
+    description: Prerelease increment (over current semver tag)
+    value: ${{ steps.incr.outputs.prerelease }}  
+  next-patch:
+    description: Patch increment (over current semver tag)
+    value: ${{ steps.incr.outputs.patch }}
+  next-minor:
+    description: Minor increment (over current semver tag)
+    value: ${{ steps.incr.outputs.minor }}
+  next-major:
+    description: Major increment (over current semver tag)
+    value: ${{ steps.incr.outputs.major }}
+  next-release:
+    description: Release increment (over current semver tag)
+    value: ${{ steps.incr.outputs.release }}
+  next-build:
+    description: Release increment (over current semver tag)
+    value: ${{ steps.build.outputs.incr }}  
+  planned-is-valid:
+    description: True if planned input is valid semver greater than current
+    value: ${{ steps.test.outputs.greater }}
+  post-planned-is-valid:
+    description: True if post-planned input is valid semver greater planned
+    value: ${{ steps.test-post.outputs.greater }}
+
 branding:
   icon: tag
   color: green
 runs:
   using: composite
   steps:
+    - name: Check out repository if one is specified
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.repo }}
+        path: ${{ inputs.path }}
+      if: ${{ inputs.repo != '' }}
     - name: Install semver-tool
       run: |
         wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -38,13 +86,54 @@ runs:
       run: |
         echo "::set-output name=tag::$(greatest-semver-tag)"
       shell: bash
-    - name: Strip off 'v' prefix if there is one
-      id: strip
+    - name: Set current version based on stripped tag
+      id: cur
       run: |
-        tag="${{ steps.find.outputs.tag }}" && shopt -s extglob && echo "::set-output name=ver::${tag##v}"
+        echo "::set-output name=ver::$(echo "${{ steps.find.outputs.tag }}" | sed 's/^[^0-9]*//')"
       shell: bash
+    - name: Test if planned input is greater than output
+      id: test
+      run: >
+        if [[ $(semver compare ${{ inputs.planned }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
+          echo "::set-output name=greater::true"
+        else
+          echo "::set-output name=greater::false"
+        fi
+      shell: bash
+      if: ${{ inputs.planned != '' }}
+    - name: Test if post-planned input is greater than planned input
+      id: test-post
+      run: >
+        if [[ $(semver compare ${{ inputs.post-planned }} ${{ inputs.planned }}) -eq 1 ]]; then
+          echo "::set-output name=greater::true"
+        else
+          echo "::set-output name=greater::false"
+        fi
+      shell: bash
+      if: ${{ inputs.planned != '' && inputs.post-planned != '' }}
+    - name: Produce increments
+      id: incr
+      run: |
+        echo "::set-output name=patch::$(semver bump patch ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=minor::$(semver bump minor ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=major::$(semver bump major ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=prerelease::$(semver bump prerel ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=release::$(semver bump release ${{ steps.find.outputs.tag }})"
+      shell: bash
+    - name: Produce build increment if a build string was given
+      id: build
+      run: |
+        echo "::set-output name=incr::$(semver bump build ${{ inputs.build }} ${{ steps.find.outputs.tag }})"
+      shell: bash    
+      if: ${{ inputs.build != '' }}
     - name: Print results
       run: |
-        echo "Latest release tag: ${{ steps.find.outputs.tag }}"
-        echo "Without a leading 'v': ${{ steps.strip.outputs.ver }}"
+        echo "Greatest tag: ${{ steps.find.outputs.tag }}"
+        echo "Current version: ${{ steps.cur.outputs.ver }}"
+        echo "Prerelease increment: ${{ steps.incr.outputs.prerelease }}"
+        echo "Patch increment: ${{ steps.incr.outputs.patch }}"
+        echo "Minor increment: ${{ steps.incr.outputs.minor }}"
+        echo "Major increment: ${{ steps.incr.outputs.major }}"
+        echo "Release increment: ${{ steps.incr.outputs.release }}"
+        echo "Build increment (if specified): ${{ steps.build.outputs.incr }}"
       shell: bash
