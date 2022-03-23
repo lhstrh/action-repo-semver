@@ -93,6 +93,7 @@ runs:
         pre="$(semver get prerel $tag)"
         build="$(semver get build $tag)"
         echo "::set-output name=ver::$rel-$pre+build"
+      shell: bash
     - name: Test if planned input is greater than output
       id: test
       run: >
