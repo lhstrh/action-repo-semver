@@ -20,6 +20,12 @@ jobs:
           planned: 1000000000.0.0
           post-planned: 1000000000.0.1
         id: billionth
+      - name: Run local action with repo=lf-lang/lingua-franca
+        uses: ./
+        with:
+          repo: lf-lang/lingua-franca
+          path: lingua-franca
+        id: semver-tag
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
