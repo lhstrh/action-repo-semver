@@ -1,5 +1,6 @@
 name: Repo SemVer
 description: Find the greatest semantic version Git tag and return it, along with ("major", "minor", "patch", etc.) increments.
+author: Marten Lohstroh <marten@berkeley.edu>
 inputs:
   path:
     type: string
