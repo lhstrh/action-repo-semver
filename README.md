@@ -7,8 +7,8 @@ This GitHub Action sorts through a given repository's tags and outputs the great
 ## Usage
 In the `steps` of a job, specify the following:
 ```
-- uses: actions/greatest-semver-tag@v1.0.0-beta.0
-  id: semver-tag
+- uses: actions/repo-semver-tag@v1.0.0-beta.0
+  id: repo-semver-tag
   with:
     # Repository name with owner. For example, actions/greatest-semver-tag
     # Default: ${{ github.repository }}
@@ -30,9 +30,9 @@ You can then use the output in a subsequent step:
 ```
 - name: Do something with the found tag
   run: |
-    echo "The greatest tag is: ${{ steps.semver-tag.outputs.tag }}"
-    echo "The current version is: ${{ steps.semver-tag.outputs.current }}"
-    echo "The next major release is: ${{ steps.semver-tag.outputs.next-major }}"
+    echo "The greatest tag is: ${{ steps.repo-semver-tag.outputs.tag }}"
+    echo "The current version is: ${{ steps.repo-semver-tag.outputs.current }}"
+    echo "The next major release is: ${{ steps.repo-semver-tag.outputs.next-major }}"
 ```
 Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current` and `next-*` are not prefixed _even if the tag has one_.
 
