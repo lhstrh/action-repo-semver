@@ -7,7 +7,8 @@ This GitHub Action sorts through a given repository's tags and outputs the great
 ## Usage
 In the `steps` of a job, specify the following:
 ```
-- uses: lhstrh/action-repo-semver@v1.0.0
+- name: Repo SemVer
+  uses: lhstrh/action-repo-semver@v1.0.0
   id: repo-semver
   with:
     # Repository name with owner. For example, actions/checkout
