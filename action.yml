@@ -89,16 +89,16 @@ runs:
     - name: Construct version from tag
       id: construct
       run: |
-        rel="$(semver get release $tag)";
-        pre="$(semver get prerel $tag)";
-        build="$(semver get build $tag)";
+        rel="$(semver get release ${{ steps.find.outputs.tag }})";
+        pre="$(semver get prerel ${{ steps.find.outputs.tag }})";
+        bld="$(semver get build ${{ steps.find.outputs.tag }})";
         if [[ $pre != "" ]]; then
           pre="-$pre"
         fi
-        if [[ $build != "" ]]; then
-          build="+$build"
+        if [[ $bld != "" ]]; then
+          bld="+$bld"
         fi
-        echo "::set-output name=ver::$rel$pre$build"
+        echo "::set-output name=ver::$rel$pre$bld"
       shell: bash
     - name: Test if planned input is greater than output
       id: test
