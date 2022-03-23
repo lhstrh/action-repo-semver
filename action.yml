@@ -67,6 +67,7 @@ runs:
         if [[ $(semver compare ${{ inputs.test-if-greater }} ${{ steps.find.outputs.tag }}) -eq 1 ]]; then
           echo "::set-output name=greater::true"
         fi
+      shell: bash
       if: ${{ inputs.test-if-greater != '' }}
     - name: Produce increments
       id: incr
