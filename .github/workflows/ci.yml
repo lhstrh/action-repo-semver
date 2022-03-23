@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         id: semver-tag
+        compare-against: 0.0.0
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -24,7 +25,6 @@ jobs:
           [[ ! -z "${{ steps.semver-tag.outputs.next-major }}" ]] || exit 1
           [[ ! -z "${{ steps.semver-tag.outputs.next-prerelease }}" ]] || exit 1
           [[ ! -z "${{ steps.semver-tag.outputs.next-release }}" ]] || exit 1
-          
       - name: Ensure outputs are semver and greater than 0.0.0
         run: |
           [[ $(semver compare ${{ steps.semver-tag.outputs.current }} 0.0.0) -eq 1 ]] || exit 1
@@ -33,3 +33,6 @@ jobs:
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-minor }} ${{ steps.semver-tag.outputs.next-patch }}) -eq 1 ]] || exit 1
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-major }} ${{ steps.semver-tag.outputs.next-minor }}) -eq 1 ]] || exit 1
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-release }} ${{ steps.semver-tag.outputs.next-prerelease }}) -eq 1 ]] || exit 1
+      - name: Ensure 0.0.0 is not greater than whatever the current version is
+        run: |
+          [[ "${{ steps.semver-tag.outputs.input-greater }}" == "false" ]] || exit 1
