@@ -8,12 +8,14 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Run local action with planned=0.0.0
+        uses: actions/checkout@v3
       - uses: ./
         with:
           planned: 0.0.0
         id: semver-tag
-      - uses: ./
+      - name: Run local action with planned=1000000000.0.0, post-planned=1000000000.0.1
+        uses: ./
         with:
           planned: 1000000000.0.0
           post-planned: 1000000000.0.1
