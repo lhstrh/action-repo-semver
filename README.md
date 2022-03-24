@@ -33,7 +33,7 @@ The requested bump is: 3.14.1
 Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current`, `bump`, and `next-*` are not prefixed _even if the tag has one_.
 
 
-## Inputs
+## Inputs (all are _optional_)
 
 * `repo` If specified, this repository is checked out by the action. By default, no checkout occurs.
 * `path` Location to find the repository checkout. By default, this is `$github.workspace`.
