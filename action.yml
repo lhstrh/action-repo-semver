@@ -173,9 +173,7 @@ runs:
             echo "The build input must be set when requesting build bump";  
           fi
         else
-          echo "::error::Invalid version bump: ${{ inputs.bump }}";
-          echo "Options: major|minor|patch|release|prerelease|build)";
-          exit 1
+          echo "::error::Invalid version bump: ${{ inputs.bump }}. (options: major|minor|patch|release|prerelease|build)";
         fi
       if: ${{ inputs.bump != '' }}
       shell: bash
