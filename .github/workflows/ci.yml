@@ -17,6 +17,7 @@ jobs:
       - name: Run local action with planned=1000000000.0.0, post-planned=1000000000.0.1
         uses: ./
         with:
+          bump: major
           planned: 1000000000.0.0
           post-planned: 1000000000.0.1
         id: billionth
@@ -52,13 +53,16 @@ jobs:
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-release }} ${{ steps.semver-tag.outputs.next-prerelease }}) -eq 1 ]] || exit 1
       - name: Ensure 0.0.0 is not greater than whatever the current version is
         run: |
-          [[ "${{ steps.semver-tag.outputs.planned-is-valid }}" == "false" ]] || exit 1
+          [[ "${{ steps.semver-tag.outputs.planned-is-valid }}" = "false" ]] || exit 1
       - name: Ensure 1000000000.0.0 is greater than whatever the current version is
         run: |
-          [[ "${{ steps.billionth.outputs.planned-is-valid }}" == "true" ]] || exit 1
+          [[ "${{ steps.billionth.outputs.planned-is-valid }}" = "true" ]] || exit 1
       - name: Ensure 1000000000.0.1 is greater than 1000000000.0.0
         run: |
-          [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" == "true" ]] || exit 1
+          [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" = "true" ]] || exit 1
+      - name: Ensure major bump of 1000000000 is 1000000000.1.0
+        run: |
+          [[ "${{ steps.billionth.outputs.bump }}" = "1000000000.1.0" ]] || exit 1
       - name: Ensure next-build of foo-build is foo
         run: |
-          [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" == "foo" ]] || exit 1
+          [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" = "foo" ]] || exit 1
