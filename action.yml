@@ -177,6 +177,7 @@ runs:
           echo "Options: major|minor|patch|release|prerelease|build)";
           exit 1
         fi
+      shell: bash
     - name: Print results
       run: |
         echo "Greatest tag: ${{ steps.find.outputs.tag }}"
