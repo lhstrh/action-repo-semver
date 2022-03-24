@@ -17,7 +17,8 @@ In the `steps` of a job, specify the following:
     # Path to find/store the repository checkout
     # Default: ${{ github.workspace }}
     path: ''
-    # Options: major|minor|patch|release|prerelease|build)
+    # Size of increment in bump output
+    # Options: (major|minor|patch|release|prerelease|build)
     # Default: ''
     bump: ''
     # String to be used in next-build output
