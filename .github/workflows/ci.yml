@@ -14,9 +14,10 @@ jobs:
         with:
           planned: 0.0.0
         id: semver-tag
-      - name: Run local action with planned=1000000000.0.0, post-planned=1000000000.0.1
+      - name: Run local action with bump=major, planned=1000000000.0.0, post-planned=1000000000.0.1
         uses: ./
         with:
+          bump: major
           planned: 1000000000.0.0
           post-planned: 1000000000.0.1
         id: billionth
@@ -25,11 +26,11 @@ jobs:
         with:
           build: foo
         id: foo-build
-      - name: Run local action with repo=lf-lang/lingua-franca
+      - name: Run local action with repo=lhstrh/action-repo-semver
         uses: ./
         with:
-          repo: lf-lang/lingua-franca
-          path: lingua-franca
+          repo: lhstrh/action-repo-semver
+          path: foo
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
@@ -52,13 +53,16 @@ jobs:
           [[ $(semver compare ${{ steps.semver-tag.outputs.next-release }} ${{ steps.semver-tag.outputs.next-prerelease }}) -eq 1 ]] || exit 1
       - name: Ensure 0.0.0 is not greater than whatever the current version is
         run: |
-          [[ "${{ steps.semver-tag.outputs.planned-is-valid }}" == "false" ]] || exit 1
+          [[ "${{ steps.semver-tag.outputs.planned-is-valid }}" = "false" ]] || exit 1
       - name: Ensure 1000000000.0.0 is greater than whatever the current version is
         run: |
-          [[ "${{ steps.billionth.outputs.planned-is-valid }}" == "true" ]] || exit 1
+          [[ "${{ steps.billionth.outputs.planned-is-valid }}" = "true" ]] || exit 1
       - name: Ensure 1000000000.0.1 is greater than 1000000000.0.0
         run: |
-          [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" == "true" ]] || exit 1
+          [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" = "true" ]] || exit 1
+      - name: Check major bump
+        run: |
+          [[ "${{ steps.billionth.outputs.bump }}" = "${{ steps.billionth.outputs.next-major }}" ]] || exit 1
       - name: Ensure next-build of foo-build is foo
         run: |
-          [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" == "foo" ]] || exit 1
+          [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" = "foo" ]] || exit 1
