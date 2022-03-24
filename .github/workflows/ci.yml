@@ -17,7 +17,7 @@ jobs:
       - name: Run local action with bump=major, planned=1000000000.0.0, post-planned=1000000000.0.1
         uses: ./
         with:
-          bump: major
+          bump: majorrrr
           planned: 1000000000.0.0
           post-planned: 1000000000.0.1
         id: billionth
