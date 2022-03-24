@@ -8,7 +8,7 @@ This GitHub Action sorts through a given repository's tags and outputs the great
 In the `steps` of a job, specify the following:
 ```
 - name: Repo SemVer
-  uses: lhstrh/action-repo-semver@v1.1.0
+  uses: lhstrh/action-repo-semver@v1.1.1
   id: repo-semver
   with:
     bump: patch
