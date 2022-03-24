@@ -11,25 +11,7 @@ In the `steps` of a job, specify the following:
   uses: lhstrh/action-repo-semver@v1.1.0
   id: repo-semver
   with:
-    # Repository name with owner. For example, actions/checkout
-    # Default: ${{ github.repository }}
-    repo: ''
-    # Path to find/store the repository checkout
-    # Default: ${{ github.workspace }}
-    path: ''
-    # Size of increment in bump output
-    # Options: (major|minor|patch|release|prerelease|build)
-    # Default: ''
-    bump: ''
-    # String to be used in next-build output
-    # Default: ''
-    build: ''
-    # Version of planned release
-    # Default: ''
-    planned: ''
-    # Version after planned release
-    # Default: ''
-    post-planned: ''
+    bump: patch
 ```
 You can then use the output in a subsequent step:
 ```
@@ -38,8 +20,17 @@ You can then use the output in a subsequent step:
     echo "The greatest tag is: ${{ steps.repo-semver.outputs.tag }}"
     echo "The current version is: ${{ steps.repo-semver.outputs.current }}"
     echo "The next major release is: ${{ steps.repo-semver.outputs.next-major }}"
+    echo "The requested bump is: ${{ steps.repo-semver.outputs.bump }}"
 ```
-Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current` and `next-*` are not prefixed _even if the tag has one_.
+Assuming the greatest tag is `v3.14.0`, this will give the following output:
+```
+The greatest tag is: v3.14.0
+The current version is: 3.14.0
+The next major release is: 4.0.0
+The requested bump is: 3.14.1
+```
+
+Note that the `tag` output is "as-is", including any prefix the semver might have. All other outputs, including `current`, `bump`, and `next-*` are not prefixed _even if the tag has one_.
 
 
 ## Inputs
