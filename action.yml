@@ -157,15 +157,15 @@ runs:
       id: bump
       run: >
         if [[ "${{ inputs.bump }}" = "patch" ]]; then
-          echo "::set-output name=ver::${{ steps.incr.outputs.next-patch }}"
+          echo "::set-output name=ver::${{ steps.incr.outputs.patch }}"
         elif [[ "${{ inputs.bump }}" = "minor" ]]; then
-          echo "::set-output name=ver::${{ steps.incr.outputs.next-minor }}"
+          echo "::set-output name=ver::${{ steps.incr.outputs.minor }}"
         elif [[ "${{ inputs.bump }}" = "major" ]]; then
-          echo "::set-output name=ver::${{ steps.incr.outputs.next-major }}"
+          echo "::set-output name=ver::${{ steps.incr.outputs.major }}"
         elif [[ "${{ inputs.bump }}" = "release" ]]; then
-          echo "::set-output name=ver::${{ steps.incr.outputs.next-release }}"
+          echo "::set-output name=ver::${{ steps.incr.outputs.release }}"
         elif [[ "${{ inputs.bump }}" = "prerelease" ]]; then
-          echo "::set-output name=ver::${{ steps.incr.outputs.next-prerelease }}"
+          echo "::set-output name=ver::${{ steps.incr.outputs.prerelease }}"
         elif [[ "${{ inputs.bump }}" = "build" ]]; then
           if [[ "${{ inputs.build }}" != "" ]]; then
             echo "::set-output name=ver::${{ steps.incr.outputs.next-build }}"

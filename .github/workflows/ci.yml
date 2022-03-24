@@ -14,7 +14,7 @@ jobs:
         with:
           planned: 0.0.0
         id: semver-tag
-      - name: Run local action with planned=1000000000.0.0, post-planned=1000000000.0.1
+      - name: Run local action with bump=major, planned=1000000000.0.0, post-planned=1000000000.0.1
         uses: ./
         with:
           bump: major
@@ -26,11 +26,11 @@ jobs:
         with:
           build: foo
         id: foo-build
-      - name: Run local action with repo=lf-lang/lingua-franca
+      - name: Run local action with repo=action-repo-semver
         uses: ./
         with:
-          repo: lf-lang/lingua-franca
-          path: lingua-franca
+          repo: action-repo-semver
+          path: foo
       - name: Install semver-tool
         run: |
           wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
