@@ -8,7 +8,7 @@ This GitHub Action sorts through a given repository's tags and outputs the great
 In the `steps` of a job, specify the following:
 ```
 - name: Repo SemVer
-  uses: lhstrh/action-repo-semver@v1.0.1
+  uses: lhstrh/action-repo-semver@v1.1.0
   id: repo-semver
   with:
     # Repository name with owner. For example, actions/checkout
@@ -17,6 +17,9 @@ In the `steps` of a job, specify the following:
     # Path to find/store the repository checkout
     # Default: ${{ github.workspace }}
     path: ''
+    # Options: major|minor|patch|release|prerelease|build)
+    # Default: ''
+    bump: ''
     # String to be used in next-build output
     # Default: ''
     build: ''
@@ -42,9 +45,10 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 
 * `repo` If specified, this repository is checked out by the action. By default, no checkout occurs.
 * `path` Location to find the repository checkout. By default, this is `$github.workspace`.
+* `bump` If specified, the `bump` output will reflect the given version increment with respect to `current`.
 * `build` If specified, the `next-build` output will be generated featuring this string (and remain empty otherwise).
 * `planned` If this is a valid semver greater than the `current` output, the `valid-planned` output is `true`.
-*  `post-planned` If this is a valid semver greater than the `planned` input, the `valid-post-planned` output is `true`.
+* `post-planned` If this is a valid semver greater than the `planned` input, the `valid-post-planned` output is `true`.
 
 
 ## Outputs
@@ -52,6 +56,7 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 * `tag` The greatest tag found that qualifies as a semver string (or empty if none was found).
 * `prefix` The prefix used in the found `tag` (or empty if none was used).
 * `current` The version corresponding the the `tag` output, stripped of any prefix. Defaults to `0.0.0` if `tag` is empty. 
+* `bump` The version increment relative to `current` as specified in the `bump` input (or empty if none was given).
 * `next-prerelease` The smallest prerelease increment relative to the `current` output.
 * `next-patch` The smallest patch increment relative `current`.
 * `next-minor` The smallest minor increment relative to `current`.
