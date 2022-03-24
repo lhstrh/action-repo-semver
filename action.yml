@@ -177,6 +177,7 @@ runs:
           echo "Options: major|minor|patch|release|prerelease|build)";
           exit 1
         fi
+      if: ${{ inputs.bump != "" }}
       shell: bash
     - name: Print results
       run: |
