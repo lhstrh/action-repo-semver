@@ -10,6 +10,14 @@ inputs:
     type: string
     description: Name of repository to check out
     required: false
+  bump:
+    type: string
+    description: Requested version increment in bump output
+    required: false
+  prerelease:
+    type: string
+    description: String to be used in the next-prerelease output
+    required: false
   build:
     type: string
     description: String to be used in next-build output
@@ -30,6 +38,9 @@ outputs:
   current:
     description: Current version
     value: ${{ steps.cur.outputs.ver }}
+  bump:
+    description: Requested version bump
+    value: ${{ steps.bump.outputs.ver }}
   prefix:
     description: Prefix used in the tag
     value: ${{ steps.prefix.output.str }}
@@ -133,7 +144,7 @@ runs:
         echo "::set-output name=patch::$(semver bump patch ${{ steps.find.outputs.tag }})"
         echo "::set-output name=minor::$(semver bump minor ${{ steps.find.outputs.tag }})"
         echo "::set-output name=major::$(semver bump major ${{ steps.find.outputs.tag }})"
-        echo "::set-output name=prerelease::$(semver bump prerel ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=prerelease::$(semver bump prerel ${{ inputs.prerelease }} ${{ steps.find.outputs.tag }})"
         echo "::set-output name=release::$(semver bump release ${{ steps.find.outputs.tag }})"
       shell: bash
     - name: Produce build increment if a build string was given
@@ -142,6 +153,30 @@ runs:
         echo "::set-output name=incr::$(semver bump build ${{ inputs.build }} ${{ steps.find.outputs.tag }})"
       shell: bash    
       if: ${{ inputs.build != '' }}
+      - name: Produce version bump (if requested)
+        id: bump
+        run: >
+          if [[ "${{ inputs.bump }}" = "patch" ]]; then
+            echo "::set-output name=ver::${{ steps.incr.outputs.next-patch }}"
+          elif [[ "${{ inputs.bump }}" = "minor" ]]; then
+            echo "::set-output name=ver::${{ steps.incr.outputs.next-minor }}"
+          elif [[ "${{ inputs.bump }}" = "major" ]]; then
+            echo "::set-output name=ver::${{ steps.incr.outputs.next-major }}"
+          elif [[ "${{ inputs.bump }}" = "release" ]]; then
+            echo "::set-output name=ver::${{ steps.incr.outputs.next-release }}"
+          elif [[ "${{ inputs.bump }}" = "prerelease" ]]; then
+            echo "::set-output name=ver::${{ steps.incr.outputs.next-prerelease }}"
+          elif [[ "${{ inputs.bump }}" = "build" ]]; then
+            if [[ "${{ inputs.build }}" != "" ]]; then
+              echo "::set-output name=ver::${{ steps.incr.outputs.next-build }}"
+            else
+              echo "The build input must be set when requesting build bump";  
+            fi
+          else
+            echo "Invalid version bump: ${{ inputs.bump }}";
+            echo "Options: major|minor|patch|release|prerelease|build)";
+            exit 1
+          fi
     - name: Print results
       run: |
         echo "Greatest tag: ${{ steps.find.outputs.tag }}"
