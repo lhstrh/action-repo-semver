@@ -60,9 +60,9 @@ jobs:
       - name: Ensure 1000000000.0.1 is greater than 1000000000.0.0
         run: |
           [[ "${{ steps.billionth.outputs.post-planned-is-valid }}" = "true" ]] || exit 1
-      - name: Ensure major bump of 1000000000 is 1000000000.1.0
+      - name: Check major bump
         run: |
-          [[ "${{ steps.billionth.outputs.bump }}" = "1000000001.0.0" ]] || exit 1
+          [[ "${{ steps.billionth.outputs.bump }}" = "${{ steps.billionth.outputs.next-major }}" ]] || exit 1
       - name: Ensure next-build of foo-build is foo
         run: |
           [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" = "foo" ]] || exit 1
