@@ -1,14 +1,26 @@
-# Repo SemVer
+# GitHub Action: Repo SemVer
 
 [![CI](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml/badge.svg)](https://github.com/lhstrh/greatest-semver-tag/actions/workflows/ci.yml)
 
-This GitHub Action sorts through a given repository's tags and outputs the greatest according to the [rules of semantic versioning](https://semver.org/). In addition, it outputs "release", "major", "minor", "patch", "prerelease", and "build" increments. When given a specific semver increment, it will also output the requested version bump with respect to the current version in a separate "bump" output. When given the version number of a release planned for the future, this action also reports whether it is indeed greater than the current version. This action is primarily intended as a utility for use in release automation workflows.
+This GitHub Action sorts through a given repository's tags and returns the greatest according to the [rules of semantic versioning](https://semver.org/) on its `tag` output, along with a clean semver stripped of any prefix on its `current` output. This action is primarily intended as a utility for use in release automation workflows.
+
+**Obtaining version increments**
+
+The `release`, `major`, `minor`, `patch`, `prerelease`, and `build` outputs yield a semver that has a corresponding increment over the `current` output.
+
+**Requesting a specific version bump**
+
+If a `bump` input is given (e.g., "minor" or "release"), the `bump` output yields the requested semver with respect to `current`.
+
+**Validating planned a version**
+
+When given a semver on the `planned` input, this action reports whether the given version is indeed greater than `current` on the `planned-is-valid` output. 
 
 ## Usage
 In the `steps` of a job, specify the following:
 ```
 - name: Repo SemVer
-  uses: lhstrh/action-repo-semver@v1.1.1
+  uses: lhstrh/action-repo-semver@v1.1.2
   id: repo-semver
   with:
     bump: patch
@@ -38,9 +50,9 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 * `repo` If specified, this repository is checked out by the action. By default, no checkout occurs.
 * `path` Location to find the repository checkout. By default, this is `$github.workspace`.
 * `bump` If specified, the `bump` output will reflect the given version increment with respect to `current`.
-* `build` If specified, the `next-build` output will be generated featuring this string (and remain empty otherwise).
 * `planned` If this is a valid semver greater than the `current` output, the `valid-planned` output is `true`.
-* `post-planned` If this is a valid semver greater than the `planned` input, the `valid-post-planned` output is `true`.
+* `build` If specified, the `next-build` output will be generated featuring this string (and remain empty otherwise).
+* `prerelease` If specified, the `next-prerelease` output will be generated featuring this string (and remain empty otherwise).
 
 
 ## Outputs
@@ -56,8 +68,6 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 * `next-release` The smallest release increment relative to `current`.
 * `next-build` A build increment relative to `current`.
 * `planned-is-valid` True if the `planned` input is a valid semver greater than the `current` output.
-* `post-planned-is-valid` True if the `post-planned` input is a valid semver greater than `planned` input.
-
 
 ## Examples
 * (prerelease) If `current` is `1.0.0`, then `next-prerelease` is `1.0.0-1`.
