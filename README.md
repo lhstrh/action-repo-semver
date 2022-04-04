@@ -6,7 +6,7 @@ This GitHub Action sorts through a given repository's tags and returns the great
 
 **Obtaining version increments**
 
-The `release`, `major`, `minor`, `patch`, `prerelease`, and `build` outputs yield a semver that has a corresponding increment over the `current` output.
+The `next-*` outputs yield a semver that has a corresponding increment over the `current` output (e.g., if `current` is `1.0.0` then `next-minor` is `1.0.1`).
 
 **Requesting a specific version bump**
 
