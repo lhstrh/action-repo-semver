@@ -114,7 +114,7 @@ runs:
     - name: Test if planned input is greater than current
       id: test
       run: >
-        if [[ $(semver compare ${{ inputs.planned }} ${{ steps.find.outputs.ver }}) -eq 1 ]]; then
+        if [[ $(semver compare ${{ inputs.planned }} ${{ steps.cur.outputs.ver }}) -eq 1 ]]; then
           echo "::set-output name=greater::true"
         else
           echo "::set-output name=greater::false"
