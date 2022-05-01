@@ -101,8 +101,8 @@ runs:
     - name: Set current version based on stripped tag
       id: cur
       run: >
-        if [[ "${{ input.override }}" != "" ]]; then
-          echo "::set-output name=ver::${{ input.override }}"  
+        if [[ "${{ inputs.override }}" != "" ]]; then
+          echo "::set-output name=ver::${{ inputs.override }}"  
         else if [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
           echo "::set-output name=ver::0.0.0"
         else
