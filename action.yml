@@ -102,7 +102,9 @@ runs:
       id: cur
       run: >
         if [[ "${{ inputs.override }}" != "" ]]; then
-          [[ semver compare ${{ inputs.override }} 0.0.0 ]] = "1" || exit 1;
+          if [[ semver compare ${{ inputs.override }} 0.0.0 ]] != "1" ]]; then
+            echo "Invalid override."; exit 1
+          fi
           echo "::set-output name=ver::${{ inputs.override }}"  
         elif [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
           echo "::set-output name=ver::0.0.0"
