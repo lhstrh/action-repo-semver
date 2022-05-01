@@ -1,5 +1,5 @@
 #!/bin/bash
-latest="0.0.0"
+latest=""
 while IFS= read -r line; do
     if [[ $(semver compare ${line} ${latest} 2> /dev/null) = '1' ]]; then
         latest=${line}
