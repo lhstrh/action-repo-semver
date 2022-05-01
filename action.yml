@@ -103,7 +103,8 @@ runs:
       run: >
         if [[ "${{ inputs.override }}" != "" ]]; then
           if [[ $(semver compare ${{ inputs.override }} 0.0.0) != "1" ]]; then
-            echo "Invalid override."; exit 1
+            if [[ ${{ inputs.override }} != 0.0.0 ]]; then
+              echo "Invalid override."; exit 1
           fi
           echo "::set-output name=ver::${{ inputs.override }}"  
         elif [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
