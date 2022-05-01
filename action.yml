@@ -124,16 +124,16 @@ runs:
     - name: Produce increments
       id: incr
       run: |
-        echo "::set-output name=patch::$(semver bump patch ${{ steps.find.outputs.tag }})"
-        echo "::set-output name=minor::$(semver bump minor ${{ steps.find.outputs.tag }})"
-        echo "::set-output name=major::$(semver bump major ${{ steps.find.outputs.tag }})"
-        echo "::set-output name=prerelease::$(semver bump prerel ${{ inputs.prerelease }} ${{ steps.find.outputs.tag }})"
-        echo "::set-output name=release::$(semver bump release ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=patch::$(semver bump patch ${{ steps.cur.outputs.ver }})"
+        echo "::set-output name=minor::$(semver bump minor ${{ steps.cur.outputs.ver }})"
+        echo "::set-output name=major::$(semver bump major ${{ steps.cur.outputs.ver }})"
+        echo "::set-output name=prerelease::$(semver bump prerel ${{ inputs.prerelease }} ${{ steps.cur.outputs.ver }})"
+        echo "::set-output name=release::$(semver bump release ${{ steps.cur.outputs.ver }})"
       shell: bash
     - name: Produce build increment if a build string was given
       id: build
       run: |
-        echo "::set-output name=incr::$(semver bump build ${{ inputs.build }} ${{ steps.find.outputs.tag }})"
+        echo "::set-output name=incr::$(semver bump build ${{ inputs.build }} ${{ steps.cur.outputs.ver }})"
       shell: bash    
       if: ${{ inputs.build != '' }}
     - name: Produce version bump (if requested)
