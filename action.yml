@@ -14,6 +14,10 @@ inputs:
     type: string
     description: Requested version increment in bump output
     required: false
+  override:
+    type: string
+    description: Manually specified current version
+    required: false
   planned:
     type: string
     description: Version to compare against current
@@ -91,25 +95,34 @@ runs:
     - name: Find the greatest semver tag
       id: find
       working-directory: ${{ inputs.path }}
-      run: >
-        tag="$(greatest-semver-tag)";
-        if [[ tag = "0.0.0" ]]; then
-          echo "::set-output name=tag::$(greatest-semver-tag)"
-        else
-          echo "::set-output name=tag::$(greatest-semver-tag)"
-        fi
+      run: |
+        echo "::set-output name=tag::$(greatest-semver-tag)"
       shell: bash
     - name: Set current version based on stripped tag
       id: cur
-      run: |
-        echo "::set-output name=ver::$(echo "${{ steps.find.outputs.tag }}" | sed 's/^[^0-9]*//')"
+      run: >
+        if [[ "${{ inputs.override }}" != "" ]]; then
+          if [[ $(semver compare ${{ inputs.override }} 0.0.0) != "1" ]]; then
+            if [[ "${{ inputs.override }}" != "0.0.0" ]]; then
+              echo "Invalid override."; exit 1
+            fi
+          fi
+          echo "::set-output name=ver::${{ inputs.override }}"  
+        elif [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
+          echo "::set-output name=ver::0.0.0"
+        else
+          echo "::set-output name=ver::$(echo "${{ steps.find.outputs.tag }}" | sed 's/^[^0-9]*//')"
+        fi
       shell: bash
     - name: Determine the prefix and set it
       id: prefix
       run: >
-        tag="${{ steps.find.outputs.tag }}";
         ver="${{ steps.cur.outputs.ver }}";
-        echo "::set-output name=str::$(echo ${tag%"$ver"})"
+        if [[ "${{ inputs.override }}" != "" ]]; then
+          echo "::set-output name=str::$(echo ${${{ inputs.override }}%"$ver"})"
+        elif [[ "${{ steps.find.outputs.tag }}" != "" ]]; then
+          echo "::set-output name=str::$(echo ${${{ steps.find.outputs.tag }}%"$ver"})"
+        fi
       shell: bash
     - name: Test if planned input is greater than current
       id: test

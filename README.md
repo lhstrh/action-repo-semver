@@ -50,6 +50,7 @@ Note that the `tag` output is "as-is", including any prefix the semver might hav
 * `repo` If specified, this repository is checked out by the action. By default, no checkout occurs.
 * `path` Location to find the repository checkout. By default, this is `$github.workspace`.
 * `bump` If specified, the `bump` output will reflect the given version increment with respect to `current`.
+* `override` If specified, the `current` output will be set equal to `override`, and all other outputs are computed with respect to it (instead of using the greatest tag found in the repository). A given `override` must be a valid semantic version number.
 * `planned` If this is a valid semver greater than the `current` output, the `valid-planned` output is `true`.
 * `build` If specified, the `next-build` output will be generated featuring this string (and remain empty otherwise).
 * `prerelease` If specified, the `next-prerelease` output will be generated featuring this string (and remain empty otherwise).

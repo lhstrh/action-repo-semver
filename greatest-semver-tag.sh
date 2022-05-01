@@ -6,4 +6,8 @@ while IFS= read -r line; do
     fi
     #echo "... $line ..."
 done <<< "$(git tag)"
-echo $latest
+if [[ ${latest} != "0.0.0" ]]; then
+    echo ${latest}
+else
+   echo ""
+fi
