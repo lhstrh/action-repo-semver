@@ -103,7 +103,7 @@ runs:
       run: >
         if [[ "${{ inputs.override }}" != "" ]]; then
           echo "::set-output name=ver::${{ inputs.override }}"  
-        else if [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
+        elif [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
           echo "::set-output name=ver::0.0.0"
         else
           echo "::set-output name=ver::$(echo "${{ steps.find.outputs.tag }}" | sed 's/^[^0-9]*//')"
