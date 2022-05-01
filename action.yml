@@ -117,9 +117,15 @@ runs:
     - name: Determine the prefix and set it
       id: prefix
       run: >
-        tag="${{ steps.find.outputs.tag }}";
         ver="${{ steps.cur.outputs.ver }}";
-        echo "::set-output name=str::$(echo ${tag%"$ver"})"
+        if [[ "${{ inputs.override }}" != "" ]]; then
+          tag="${{ inputs.override }}"
+        elif [[ "${{ steps.find.outputs.tag }}" != "" ]]; then
+          tag="${{ steps.find.outputs.tag }}";
+        fi
+        if [[ $tag != "" ]]; then
+          echo "::set-output name=str::$(echo ${tag%"$ver"})"
+        fi
       shell: bash
     - name: Test if planned input is greater than current
       id: test
