@@ -119,12 +119,9 @@ runs:
       run: >
         ver="${{ steps.cur.outputs.ver }}";
         if [[ "${{ inputs.override }}" != "" ]]; then
-          tag="${{ inputs.override }}"
+          echo "::set-output name=str::$(echo ${${{ inputs.override }}%"$ver"})"
         elif [[ "${{ steps.find.outputs.tag }}" != "" ]]; then
-          tag="${{ steps.find.outputs.tag }}";
-        fi
-        if [[ $tag != "" ]]; then
-          echo "::set-output name=str::$(echo ${tag%"$ver"})"
+          echo "::set-output name=str::$(echo ${${{ steps.find.outputs.tag }}%"$ver"})"
         fi
       shell: bash
     - name: Test if planned input is greater than current
