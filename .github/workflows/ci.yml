@@ -67,7 +67,7 @@ jobs:
           [[ "${{ steps.billionth.outputs.bump }}" = "${{ steps.billionth.outputs.next-major }}" ]] || exit 1
       - name: Check minor bump on override
         run: |
-          [[ "${{ steps.override.outputs.bump }}" = "1.3.3" ]] || exit 1
+          [[ "${{ steps.override.outputs.bump }}" = "1.3.0" ]] || exit 1
       - name: Ensure next-build of foo-build is foo
         run: |
           [[ "$(semver get build ${{ steps.foo-build.outputs.next-build }})" = "foo" ]] || exit 1
