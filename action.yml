@@ -109,7 +109,7 @@ runs:
           fi
           echo "ver=${{ inputs.override }}" >> "$GITHUB_OUTPUT"
         elif [[ "${{ steps.find.outputs.tag }}" = "" ]]; then
-          echo "ver=0.0.0" >> ${{ inputs.override }}
+          echo "ver=0.0.0" >> "$GITHUB_OUTPUT"
         else
           echo "ver=$(echo "${{ steps.find.outputs.tag }}" | sed 's/^[^0-9]*//')" >> "$GITHUB_OUTPUT"
         fi
